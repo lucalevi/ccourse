@@ -90,6 +90,13 @@ It checks that every original exercise fails and every reference solution passes
 
 ## License
 
-This work is licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/). See [LICENSE](LICENSE).
+This repository has two licenses, split by content. Both forbid commercial use and require attribution.
 
-You may share and adapt it with attribution, for non-commercial purposes, and under the same license.
+| Part | License |
+|---|---|
+| Code: `src/`, `Cargo.toml` | [PolyForm Noncommercial 1.0.0](LICENSE-CODE) |
+| Course content: `course/`, `SYLLABUS.md` and the documentation | [CC BY-NC-SA 4.0](LICENSE-CONTENT) |
+
+You may use, share and adapt this work for non-commercial purposes, including personal use, study, teaching and non-profit work, as long as you credit the author and keep the notice in [NOTICE](NOTICE). Changes to the course content must be shared under the same CC BY-NC-SA 4.0 license.
+
+Copyright 2026 Luca Iacolettig.

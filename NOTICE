@@ -1,0 +1,10 @@
+Required Notice: Copyright 2026 Luca Iacolettig (https://github.com/lucalevi/ccourse)
+
+Licensing of this repository is split by content:
+
+  Code (src/, Cargo.toml, Cargo.lock)
+      PolyForm Noncommercial License 1.0.0. See LICENSE-CODE.
+
+  Course content (course/, SYLLABUS.md, README.md, GUIDE.md, CLAUDE.md)
+      Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+      International. See LICENSE-CONTENT.

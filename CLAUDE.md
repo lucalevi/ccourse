@@ -54,3 +54,7 @@ Three Rust modules in `src/`, plus the course content in `course/`:
 - Exercises that deliberately provoke undefined behaviour must be `kind = "debug"` and still compile with zero warnings, so the sanitizer, not the compiler, is what catches it.
 - A `predict` original has an empty `/* PREDICT` block; its solution has the filled-in one.
 - Platform note: Apple clang's AddressSanitizer does not do leak detection, so module 8's leak exercises need a different mechanism than `detect_leaks`.
+
+## Licensing
+
+Split by content, see `NOTICE`: code (`src/`, Cargo files) is PolyForm Noncommercial 1.0.0 (`LICENSE-CODE`); course content (`course/`, docs) is CC BY-NC-SA 4.0 (`LICENSE-CONTENT`). Do not add dependencies or copied code with licenses that conflict with non-commercial terms.
