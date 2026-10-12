@@ -1,0 +1,426 @@
+# The course, in order. See SYLLABUS.md for the plan behind it.
+#
+# Each exercise has an original in course/exercises/<dir>/<name>.c and a
+# reference solution in course/solutions/<dir>/<name>.c.
+#
+#   kind      fix | complete | predict | debug | build
+#   sanitize  build with AddressSanitizer and UndefinedBehaviorSanitizer
+#   hints     shown one at a time
+#   tests     each runs the program; stdout and exit code must match
+#             (optional keys: args, stdin, stdout, exit)
+#
+# `ccourse verify` checks that every original fails and every solution passes.
+
+# ── Module 0: the toolchain ─────────────────────────────────────────────────
+
+[[exercises]]
+name = "hello1"
+dir = "00_toolchain"
+kind = "fix"
+hints = [
+    "The compiler says what it expected and shows the place with a ^ mark.",
+    "Every statement ends with a semicolon. Compare the printf line with the return line.",
+]
+[[exercises.tests]]
+stdout = "Hello, C!\n"
+
+[[exercises]]
+name = "hello2"
+dir = "00_toolchain"
+kind = "fix"
+hints = [
+    "The compiler does not know what printf is. Which header declares it?",
+    "Add the line #include <stdio.h> above main.",
+]
+[[exercises.tests]]
+stdout = "Headers matter.\n"
+
+[[exercises]]
+name = "exit1"
+dir = "00_toolchain"
+kind = "complete"
+hints = [
+    "The exit code is the number that main returns.",
+    "Change return 0; to return 3;",
+]
+[[exercises.tests]]
+stdout = "Could not open the file.\n"
+exit = 3
+
+[[exercises]]
+name = "predict1"
+dir = "00_toolchain"
+kind = "predict"
+hints = [
+    "Without \\n, the next printf continues on the same line.",
+    "The program prints four lines. The first is: one two",
+]
+
+[[exercises]]
+name = "banner"
+dir = "00_toolchain"
+kind = "build"
+hints = [
+    "Use three printf statements, one per line of the banner.",
+    "Each one needs \\n at the end of its text, for example printf(\"*********\\n\");",
+]
+[[exercises.tests]]
+stdout = "*********\n* HELLO *\n*********\n"
+
+# ── Module 1: values, types and output ──────────────────────────────────────
+
+[[exercises]]
+name = "vars1"
+dir = "01_values"
+kind = "fix"
+hints = [
+    "\"Undeclared identifier\" means the compiler has never heard of that name.",
+    "A declaration starts with the type. pears needs one, just as apples has.",
+]
+[[exercises.tests]]
+stdout = "apples: 4\npears: 6\n"
+
+[[exercises]]
+name = "vars2"
+dir = "01_values"
+kind = "fix"
+hints = [
+    "The warning says count is read before it has ever been given a value.",
+    "Give count a starting value where it is declared: int count = 0;",
+]
+[[exercises.tests]]
+stdout = "count = 1\n"
+
+[[exercises]]
+name = "printf1"
+dir = "01_values"
+kind = "fix"
+hints = [
+    "The warnings name the type each specifier expects and the type it got.",
+    "int goes with %d, double with %f, char with %c.",
+    "The height needs exactly two decimals: %.2f. And look at the third printf too, which the compiler accepts but which prints a number instead of a letter.",
+]
+[[exercises.tests]]
+stdout = "age: 36\nheight: 1.82 m\ninitial: L\n"
+
+[[exercises]]
+name = "division1"
+dir = "01_values"
+kind = "debug"
+hints = [
+    "a + b + c is 11. What is 11 / 3 when both numbers are int?",
+    "One side of the division has to be a double.",
+    "Write 3.0 instead of 3.",
+]
+[[exercises.tests]]
+stdout = "average = 3.67\n"
+
+[[exercises]]
+name = "types1"
+dir = "01_values"
+kind = "predict"
+hints = [
+    "There are six lines of output, one per printf.",
+    "7 / 2 with two ints is 3, not 3.5. The multiplication in 2 + 3 * 4 is done first.",
+    "'A' + 2 is the code of the letter two places after A, and %c prints it as a letter.",
+]
+
+[[exercises]]
+name = "const1"
+dir = "01_values"
+kind = "fix"
+hints = [
+    "The compiler refuses to assign to max_lives because it is const. Removing const would hide the real mistake.",
+    "Which variable should go down when the player loses a life?",
+]
+[[exercises.tests]]
+stdout = "lives = 2 of 3\n"
+
+[[exercises]]
+name = "cast1"
+dir = "01_values"
+kind = "complete"
+hints = [
+    "The \"unused variable\" warnings disappear once you use seconds and whole.",
+    "(int) seconds gives 125.",
+    "125 / 60 is the number of full minutes; 125 % 60 is what is left.",
+]
+[[exercises.tests]]
+stdout = "2 min 5 s\n"
+
+[[exercises]]
+name = "temperature"
+dir = "01_values"
+kind = "build"
+hints = [
+    "Store each Fahrenheit value in a double variable and compute Celsius from it.",
+    "If you see 0.0 where a value should be, an integer division crept in. With double variables, (f - 32) * 5 / 9 is safe; 5 / 9 * (f - 32) is not.",
+    "One line is: printf(\"%5.1f F = %5.1f C\\n\", f, (f - 32) * 5 / 9);",
+]
+[[exercises.tests]]
+stdout = " 32.0 F =   0.0 C\n 98.6 F =  37.0 C\n212.0 F = 100.0 C\n"
+
+# ── Module 2: control flow ──────────────────────────────────────────────────
+
+[[exercises]]
+name = "if1"
+dir = "02_control_flow"
+kind = "fix"
+hints = [
+    "The warning is about an assignment used as a condition.",
+    "= stores, == compares. The condition should compare.",
+]
+[[exercises.tests]]
+stdout = "not boiling\n"
+
+[[exercises]]
+name = "if2"
+dir = "02_control_flow"
+kind = "complete"
+hints = [
+    "Start with: if (score >= 90) { grade = 'A'; } and continue with else if.",
+    "Test from the highest boundary down. Finish with a plain else for 'F'.",
+]
+[[exercises.tests]]
+stdout = "score 73 -> grade C\n"
+
+[[exercises]]
+name = "logic1"
+dir = "02_control_flow"
+kind = "predict"
+hints = [
+    "a is 0, so a counts as false. b is 5, so b counts as true.",
+    "b - 5 is 0. What does an if do with 0?",
+    "Four of the six lines are printed.",
+]
+
+[[exercises]]
+name = "while1"
+dir = "02_control_flow"
+kind = "debug"
+hints = [
+    "The loop runs while i <= 10. Does i ever change?",
+    "Add i++; inside the loop body.",
+]
+[[exercises.tests]]
+stdout = "sum = 55\n"
+
+[[exercises]]
+name = "for1"
+dir = "02_control_flow"
+kind = "complete"
+hints = [
+    "The loop header is: for (int i = 1; i <= 5; i++)",
+    "The square of i is i * i. Print it with %d and \\n.",
+]
+[[exercises.tests]]
+stdout = "1\n4\n9\n16\n25\n"
+
+[[exercises]]
+name = "break1"
+dir = "02_control_flow"
+kind = "predict"
+hints = [
+    "Go through i = 1, 2, 3... by hand. For each, check the two ifs in order.",
+    "When i is even, continue skips the printf. What happens when i reaches 9?",
+    "Do not forget the printf after the loop.",
+]
+
+[[exercises]]
+name = "switch1"
+dir = "02_control_flow"
+kind = "debug"
+hints = [
+    "Execution jumps to case 2 and then keeps going downwards.",
+    "End each case with break;",
+]
+[[exercises.tests]]
+stdout = "Tuesday\n"
+
+[[exercises]]
+name = "fizzbuzz"
+dir = "02_control_flow"
+kind = "build"
+hints = [
+    "Loop n from 1 to 15 and use an if / else if / else chain inside.",
+    "Test \"divisible by both\" first: n % 3 == 0 && n % 5 == 0. Otherwise 15 would be caught by the Fizz test.",
+]
+[[exercises.tests]]
+stdout = "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz\n"
+
+[[exercises]]
+name = "primes"
+dir = "02_control_flow"
+kind = "build"
+hints = [
+    "Outer loop: n from 2 to 29. Inner loop: d from 2 to n - 1.",
+    "Before the inner loop set int is_prime = 1; inside it, if n % d == 0, set is_prime = 0.",
+    "After the inner loop, print n only if is_prime is still 1.",
+]
+[[exercises.tests]]
+stdout = "2\n3\n5\n7\n11\n13\n17\n19\n23\n29\n"
+
+# ── Module 3: functions ─────────────────────────────────────────────────────
+
+[[exercises]]
+name = "func1"
+dir = "03_functions"
+kind = "fix"
+hints = [
+    "When the compiler reaches greet() inside main, it has not seen greet yet.",
+    "Add this line above main: void greet(void);",
+]
+[[exercises.tests]]
+stdout = "Hello from a function!\nHello from a function!\n"
+
+[[exercises]]
+name = "func2"
+dir = "03_functions"
+kind = "complete"
+hints = [
+    "The first line is: int max(int a, int b) {",
+    "Inside, compare a and b with an if and return the larger one.",
+]
+[[exercises.tests]]
+stdout = "9\n12\n5\n"
+
+[[exercises]]
+name = "func3"
+dir = "03_functions"
+kind = "fix"
+hints = [
+    "square computes n * n and then does nothing with it.",
+    "square needs: return n * n;",
+    "print_line is void, so its return 0; has to go.",
+]
+[[exercises.tests]]
+stdout = "----\n49\n----\n"
+
+[[exercises]]
+name = "value1"
+dir = "03_functions"
+kind = "predict"
+hints = [
+    "n inside add_ten is a copy of x. Changing n leaves x alone.",
+    "The first two lines are: inside: 15, then outside: 5.",
+]
+
+[[exercises]]
+name = "scope1"
+dir = "03_functions"
+kind = "fix"
+hints = [
+    "total is declared inside the loop's braces, so it does not exist at the printf.",
+    "Move the declaration int total = 0; to before the for loop.",
+]
+[[exercises.tests]]
+stdout = "total = 10\n"
+
+[[exercises]]
+name = "recursion1"
+dir = "03_functions"
+kind = "complete"
+hints = [
+    "As written, factorial(0) calls factorial(-1), which calls factorial(-2), and so on without end.",
+    "Before the return line, add: if (n <= 0) { return 1; }",
+]
+[[exercises.tests]]
+stdout = "1\n120\n3628800\n"
+
+[[exercises]]
+name = "calculator"
+dir = "03_functions"
+kind = "build"
+hints = [
+    "Each definition starts exactly like its prototype, with a body in braces instead of the semicolon.",
+    "For example: double add(double a, double b) { return a + b; }",
+]
+[[exercises.tests]]
+stdout = "7 + 2 = 9.00\n7 - 2 = 5.00\n7 * 2 = 14.00\n7 / 2 = 3.50\n"
+
+# ── Module 4: arrays ────────────────────────────────────────────────────────
+
+[[exercises]]
+name = "array1"
+dir = "04_arrays"
+kind = "fix"
+sanitize = true
+hints = [
+    "Indexes start at 0. Which index does the first element have?",
+    "The last of 5 elements has index 4.",
+]
+[[exercises.tests]]
+stdout = "first: 2\nlast: 11\n"
+
+[[exercises]]
+name = "array2"
+dir = "04_arrays"
+kind = "complete"
+sanitize = true
+hints = [
+    "int count = sizeof(values) / sizeof(values[0]);",
+    "for (int i = 0; i < count; i++) { sum = sum + values[i]; }",
+]
+[[exercises.tests]]
+stdout = "count = 6\nsum = 108\n"
+
+[[exercises]]
+name = "bounds1"
+dir = "04_arrays"
+kind = "debug"
+sanitize = true
+hints = [
+    "The report says stack-buffer-overflow and names a line in bounds1.c. Which index is used there on the last round?",
+    "squares has 5 elements: indexes 0 to 4. With i <= 5 the loop also uses index 5.",
+    "Change both conditions to i < 5.",
+]
+[[exercises.tests]]
+stdout = "0\n1\n4\n9\n16\n"
+
+[[exercises]]
+name = "array3"
+dir = "04_arrays"
+kind = "fix"
+sanitize = true
+hints = [
+    "The warning says that sizeof on an array parameter does not measure the array.",
+    "Change the first line to: int sum(int values[], int count) and delete the sizeof line inside the function.",
+    "In main, compute count with sizeof and call sum(values, count).",
+]
+[[exercises.tests]]
+stdout = "sum = 100\n"
+
+[[exercises]]
+name = "array4"
+dir = "04_arrays"
+kind = "predict"
+sanitize = true
+hints = [
+    "The output has three lines, and the first comes from inside double_one.",
+    "double_all changes the caller's array. double_one changes only its own copy.",
+]
+
+[[exercises]]
+name = "grid1"
+dir = "04_arrays"
+kind = "complete"
+sanitize = true
+hints = [
+    "You need a second loop over the columns: for (int col = 0; col < 3; col++)",
+    "Inside it: sum = sum + grid[row][col];",
+]
+[[exercises.tests]]
+stdout = "row 0: 6\nrow 1: 15\nrow 2: 24\n"
+
+[[exercises]]
+name = "stats"
+dir = "04_arrays"
+kind = "build"
+sanitize = true
+hints = [
+    "For smallest: start with result = v[0], then loop over the rest and replace result whenever v[i] is lower.",
+    "largest is the same with the comparison turned round.",
+    "For mean: add everything up in an int, then return (double) sum / n so the division keeps its fraction.",
+]
+[[exercises.tests]]
+stdout = "min = -3\nmax = 42\nmean = 12.50\n"

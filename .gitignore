@@ -1,0 +1,5 @@
+/target
+# The learner's working copies and progress, created on first run.
+/exercises
+/.ccourse
+.DS_Store
