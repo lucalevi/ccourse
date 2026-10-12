@@ -30,6 +30,7 @@ h hint · l list · r re-run · x reset · q quit
 - **Five exercise types.** Fix a compile error, complete a `TODO`, predict a program's output, debug a runtime bug, or build a program from a specification.
 - **Progressive hints and reference solutions.** Hints are revealed one at a time; the solution is shown once you pass.
 - **Saved progress.** Pick up where you left off.
+- **Written in C.** The tool itself is plain C17 with no dependencies, built with the same strict flags it asks of you. When you finish the course, `src/` is something you can read.
 
 ## Status
 
@@ -51,19 +52,29 @@ h hint · l list · r re-run · x reset · q quit
 
 ## Requirements
 
-- [Rust](https://rustup.rs/) to build the tool
 - A C compiler reachable as `cc` (clang or gcc); set the `CC` environment variable to use another
+- `make`
 - macOS or Linux (Windows via WSL)
 - A text editor of your choice
+
+That is all: `ccourse` is written in C, so the compiler you learn with is also the one that builds it. On macOS, `xcode-select --install` provides both the compiler and `make`; on Debian or Ubuntu, `sudo apt install build-essential`.
 
 ## Getting started
 
 ```
 git clone <this repository>
 cd ccourse
-cargo build --release
-./target/release/ccourse
+make
+./build/ccourse
 ```
+
+To run it as plain `ccourse`, install it:
+
+```
+make install
+```
+
+This copies the program to `~/.local/bin`, which must be on your `PATH`. Use `make install PREFIX=/usr/local` for another location and `make uninstall` to remove it. `ccourse` finds the course by looking in the current directory and its parents, so start it from inside this repository.
 
 Leave `ccourse` running, open the file it names in your editor (in another terminal or a split), edit, and save.
 
@@ -83,10 +94,12 @@ Your working copies are created in `exercises/` and your progress is kept in `.c
 Exercises are plain C files plus an entry in `course/info.toml`. After adding or changing any, run:
 
 ```
-./target/release/ccourse verify
+make verify
 ```
 
-It checks that every original exercise fails and every reference solution passes. Please follow the plan and the list of deliberate omissions in [SYLLABUS.md](SYLLABUS.md).
+It checks that every original exercise fails and every reference solution passes. The tool lives in `src/`: `course.c` (the exercise list and saved progress), `check.c` (compile, run, compare), `watch.c` (the terminal interface), `toml.c` (a reader for the small part of TOML that `info.toml` uses) and `util.c`. It must build without warnings.
+
+Please follow the plan and the list of deliberate omissions in [SYLLABUS.md](SYLLABUS.md).
 
 ## License
 
@@ -94,7 +107,7 @@ This repository has two licenses, split by content. Both forbid commercial use a
 
 | Part | License |
 |---|---|
-| Code: `src/`, `Cargo.toml` | [PolyForm Noncommercial 1.0.0](LICENSE-CODE) |
+| Code: `src/`, `Makefile` | [PolyForm Noncommercial 1.0.0](LICENSE-CODE) |
 | Course content: `course/`, `SYLLABUS.md` and the documentation | [CC BY-NC-SA 4.0](LICENSE-CONTENT) |
 
 You may use, share and adapt this work for non-commercial purposes, including personal use, study, teaching and non-profit work, as long as you credit the author and keep the notice in [NOTICE](NOTICE). Changes to the course content must be shared under the same CC BY-NC-SA 4.0 license.

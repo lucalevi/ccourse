@@ -1,5 +1,7 @@
-/target
+/build
 # The learner's working copies and progress, created on first run.
 /exercises
 /.ccourse
+# The first version of the tool, written in Rust; kept locally for reference.
+/rust-reference
 .DS_Store
