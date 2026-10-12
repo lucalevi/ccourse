@@ -247,9 +247,10 @@ static void render(const Session *s) {
     if (s->outcome.passed) {
         str_addf(&out, BOLD "n" RESET " next%s", separator);
     }
-    str_addf(&out, BOLD "h" RESET " hint%s" BOLD "l" RESET " list%s" BOLD "r" RESET " re-run%s" BOLD "x" RESET
-                        " reset%s" BOLD "q" RESET " quit\n",
-             separator, separator, separator, separator);
+    str_addf(&out, BOLD "b" RESET " back%s" BOLD "h" RESET " hint%s" BOLD "l" RESET " list%s" BOLD "r" RESET
+                        " re-run%s" BOLD "x" RESET " reset%s" BOLD "R" RESET " restart course%s" BOLD "q" RESET
+                        " quit\n",
+             separator, separator, separator, separator, separator, separator);
     show(out.data);
 
     str_free(&out);
@@ -308,8 +309,9 @@ static bool next(Session *s) {
     return go_to(s, index);
 }
 
-static bool reset(Session *s) {
-    s->note = "Reset this file to its original state? Your changes will be lost. Press y to confirm.";
+/* Shows `question` and waits for a key; true only if it was y. */
+static bool confirm(Session *s, const char *question) {
+    s->note = question;
     render(s);
     s->note = NULL;
 
@@ -317,7 +319,19 @@ static bool reset(Session *s) {
     do {
         key = read_key(-1);
     } while (key == KEY_NONE && !stopped);
-    if (key != 'y') {
+    return key == 'y';
+}
+
+static bool back(Session *s) {
+    if (s->index == 0) {
+        s->note = "This is the first exercise.";
+        return true;
+    }
+    return go_to(s, s->index - 1);
+}
+
+static bool reset(Session *s) {
+    if (!confirm(s, "Reset this file to its original state? Your changes will be lost. Press y to confirm.")) {
         return true;
     }
     if (!course_reset(s->course, current(s))) {
@@ -328,6 +342,25 @@ static bool reset(Session *s) {
         return false;
     }
     s->note = "File reset. Reload it in your editor.";
+    return true;
+}
+
+/* Starts the whole course over: every file back to its original, no progress. */
+static bool restart(Session *s) {
+    if (!confirm(s, "Restart the whole course? Every exercise file is reset and all progress is erased. "
+                    "Press y to confirm.")) {
+        return true;
+    }
+    for (size_t i = 0; i < s->course->count; i++) {
+        if (!course_reset(s->course, &s->course->exercises[i])) {
+            return false;
+        }
+    }
+    state_free(&s->state);
+    if (!go_to(s, 0)) {
+        return false;
+    }
+    s->note = "Course restarted. Reload the file in your editor.";
     return true;
 }
 
@@ -389,8 +422,10 @@ static bool watch(Session *s) {
             switch (key) {
             case 'h': hint(s); break;
             case 'n': ok = next(s); break;
+            case 'b': ok = back(s); break;
             case 'r': ok = recheck(s); break;
             case 'x': ok = reset(s); break;
+            case 'R': ok = restart(s); break;
             case 'l': ok = !list(s, &chosen) || go_to(s, chosen); break;
             default: break;
             }

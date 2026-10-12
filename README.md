@@ -19,7 +19,7 @@ exercises/00_toolchain/hello1.c:22:26: error: expected ';' after expression
       |                          ^
       |                          ;
 
-h hint · l list · r re-run · x reset · q quit
+b back · h hint · l list · r re-run · x reset · R restart course · q quit
 ```
 
 ## Features
@@ -81,13 +81,15 @@ Leave `ccourse` running, open the file it names in your editor (in another termi
 | Key | Action |
 |---|---|
 | `n` | next exercise (once the current one passes) |
+| `b` | go back to the previous exercise |
 | `h` | show the next hint |
 | `l` | list all exercises and jump to one |
 | `r` | check again without saving |
 | `x` | reset the file to its original state |
+| `R` | restart the whole course: reset every file and erase progress (asks to confirm) |
 | `q` | quit |
 
-Your working copies are created in `exercises/` and your progress is kept in `.ccourse/`. Delete both to start over. More detail, including how exercises are written and verified, is in [GUIDE.md](GUIDE.md).
+Your working copies are created in `exercises/` and your progress is kept in `.ccourse/`. Press `R` in `ccourse`, or delete both, to start over. More detail, including how exercises are written and verified, is in [GUIDE.md](GUIDE.md).
 
 ## Contributing
 

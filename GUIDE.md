@@ -23,13 +23,15 @@ Leave it running and open the file it names in your editor, in a second terminal
 | Key | Action |
 |---|---|
 | `n` | next exercise (once the current one passes) |
+| `b` | go back to the previous exercise |
 | `h` | show the next hint |
 | `l` | list all exercises and jump to one |
 | `r` | check again without saving |
 | `x` | reset the file to its original state |
+| `R` | restart the whole course: reset every file and erase progress (asks to confirm) |
 | `q` | quit |
 
-Your copies of the exercises live in `exercises/`, and your progress in `.ccourse/`. Both are created on first run. Delete them to start over.
+Your copies of the exercises live in `exercises/`, and your progress in `.ccourse/`. Both are created on first run. Press `R` in `ccourse`, or delete them, to start over.
 
 ## Writing exercises
 
